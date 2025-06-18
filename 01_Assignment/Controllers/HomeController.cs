@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Web;
 using System.Web.Mvc;
+using Demo.DatabaseQuery;
+using Demo.Models;
 
 namespace Demo.Controllers
 {
@@ -10,21 +13,65 @@ namespace Demo.Controllers
     {
         public ActionResult Index()
         {
+            QueryFunction queryFunction = new QueryFunction();
+
+            queryFunction.GetComponyDetails();
+
+            DataTable dt = queryFunction.GetComponyDetails();
+            List<Compony> Listcompony = new List<Compony>();
+
+            if(dt.Rows.Count>0)
+            {
+                foreach(DataRow dr in dt.Rows)
+                {
+                    Compony compony = new Compony();
+                    compony.Id = Convert.ToInt32( dr["Id"]);
+                    compony.ComponyName = dr["Name"].ToString();
+                    compony.Address = dr["Address"].ToString();
+                    compony.Remark = dr["Remark"].ToString();
+                    Listcompony.Add(compony);
+                }
+            }
+            return View(Listcompony);
+        }
+        public ActionResult Create()
+        {
             return View();
         }
-
-        public ActionResult About()
+        [HttpGet]
+        public ActionResult Edit()
         {
-            ViewBag.Message = "Your application description page.";
-
+            Compony objCom = new Compony();
+            objCom.ComponyName = "Infosys";
+            objCom.Address = "Pune";
+            objCom.Remark = "Good Service";
+            return View(objCom);
+        }
+        [HttpPost]
+        public ActionResult Edit(FormCollection collection)
+        {
             return View();
         }
-
-        public ActionResult Contact()
+        [HttpGet]
+        public ActionResult Details()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
+        }
+        [HttpGet]
+        public ActionResult Delete()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Delete(FormCollection collection)
+        {
+            return View();
+        }
+        public void FillDataTable()
+        {
+            QueryFunction queryFunction = new QueryFunction();
+
+            queryFunction.GetComponyDetails();
         }
     }
 }

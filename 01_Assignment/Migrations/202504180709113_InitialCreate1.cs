@@ -1,4 +1,4 @@
-﻿namespace Demo.Migrations
+﻿    namespace Demo.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
