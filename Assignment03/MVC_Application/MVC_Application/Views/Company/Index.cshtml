@@ -1,0 +1,69 @@
+﻿@model IEnumerable<MVC_Application.Models.CompanyModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+    <button class="btn btn-primary " onclick="Create()">Create new</button>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Comp_No)
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comp_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Strength)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remark)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comp_No)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comp_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Strength)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remark)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { Id = item.Comp_No  }) |
+            @Html.ActionLink("Details", "Details", new { Id = item.Comp_No }) |
+            @Html.ActionLink("Delete", "Delete", new { Id = item.Comp_No })
+        </td>
+    </tr>
+}
+
+</table>
+<script type="text/javascript">
+    function Create() {
+        window.location.href = '@Url.Action("Create","Company")';
+    }
+</script>
+@if(TempData["Messege"] !=null)
+{
+                <script type="text/javascript">
+                    window.onload = function () {
+                        var messege = '@TempData["Messege"]';
+                        if (messege) {
+                            alert(messege);
+                        }
+                    }
+                </script>
+            }
