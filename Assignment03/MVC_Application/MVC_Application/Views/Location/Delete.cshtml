@@ -1,0 +1,90 @@
+﻿@model MVC_Application.Models.LocationModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h2>Delete</h2>
+
+@using (Html.BeginForm("Delete", "Location", FormMethod.Post, new { @id = "DeleteData" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.LocNo)
+    <div class="container mt-5">
+        <div class="row cen">
+            <div class="col-md-6 bg-success p-4 rounded shadow">
+                <h4 class="text-center text-white mb-4">Location Edit</h4>
+                <hr class="bg-white" />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.CompName)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.DropDownList("CompName1", (IEnumerable<SelectListItem>)ViewBag.Company, "--Select Company--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CompName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.LocName)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(model => model.LocName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LocName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.Remarks)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(Model => Model.Remarks, new { @data_val = "false", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+
+                <div class="row " style="padding-top:15px;margin-bottom:5px;">
+                    <div class="col-sm-offset-4">
+                        <input type="submit" value="Delete" class="btn btn-primary" onclick="DeleteData()" />
+                        <input type="button" value="Back To Index" class="btn btn-warning" onclick="BackToIndex();" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    function BackToIndex() {
+        window.location.href = '@Url.Action("Index","Location")'
+    }
+
+     function DeleteData() {
+        if (confirm('Are You Sure Want Delete This Record')) {
+            document.getElementById("DeleteData").submit();
+        }
+        else {
+            window.location.href='@Url.Action("Index","Location")'
+        }
+    }
+</script>
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            var msg = '@TempData["Message"]'
+            if (msg) {
+                alert(msg)
+            }
+        }
+    </script>
+}

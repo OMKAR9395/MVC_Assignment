@@ -37,7 +37,7 @@ namespace MVC_Application.QueryFunction
 
         public int UpdateData(CompanyModel Model)
         {
-            string query = "Update Compony Set Strength= " + Model.Strength + ", Remarks='" + Model.Remark + "' where COMP_NO=" + Model.Comp_No + "";
+            string query = "Update Compony Set Strength= " + Model.Strength + ", Remarks='" + Model.Remark + "' where Comp_No=" + Model.Comp_No + "";
             query += " If(@@Error=0) Select 1 else Select 0";
 
             int Res = execute.Excuteint(query);

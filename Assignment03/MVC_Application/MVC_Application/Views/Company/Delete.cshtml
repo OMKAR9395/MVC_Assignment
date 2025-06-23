@@ -1,54 +1,70 @@
-﻿@model MVC_Application.Models.CompanyModel
+﻿﻿@model MVC_Application.Models.CompanyModel
 
 @{
     ViewBag.Title = "Delete";
 }
+<br />
+@using (Html.BeginForm("Delete", "Company", FormMethod.Post, new { @id = "DeleteData" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(Model => Model.Comp_No)
+    <div class="container mt-5">
+        <div class="row" style="display:flex;justify-content:center">
+            <div class="col-md-6 bg-success p-4 rounded shadow">
+                <h4 class="text-center text-white mb-4">Company Delete</h4>
+                <hr class="bg-white" />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-
-<h3>Are you sure you want to delete this?</h3>
-
-<div class="container py-5 d-flex justify-content-center">
-    <div class="col-md-8 col-lg-6">
-        <div class="bg-success bg-opacity-10 p-4 rounded shadow-sm">
-
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Delete</h2>
-                <h5 class="text-secondary">CompanyModel</h5>
-            </div>
-
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-
-                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
-
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.Comp_Name, htmlAttributes: new { @class = "form-label fw-bold" })
-                    @Html.EditorFor(model => model.Comp_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter company name" } })
-                    @Html.ValidationMessageFor(model => model.Comp_Name, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "form-label fw-bold" })
-                    @Html.EditorFor(model => model.Strength, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter strength" } })
-                    @Html.ValidationMessageFor(model => model.Strength, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.Remark, htmlAttributes: new { @class = "form-label fw-bold" })
-                    @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter remarks" } })
-                    @Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.Comp_Name)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(model => model.Comp_Name, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+                        @Html.ValidationMessageFor(model => model.Comp_Name, "", new { @class = "text-danger" })
+                    </div>
                 </div>
                 <br />
-                <div class="d-grid">
-                    <input type="submit" value="Delete" class="btn btn-primary rounded-pill fw-bold" />
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.Strength)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(model => model.Strength, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+                        @Html.ValidationMessageFor(model => model.Strength, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            }
-
-            <div class="text-center mt-3">
-                @Html.ActionLink("Back to List", "Index", null, new { @class = "text-decoration-none fw-medium" })
+                <br />
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.Remark)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+                        @Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row " style="padding-top:15px;margin-bottom:5px;">
+                    <div class="col-sm-offset-4">
+                        <input type="button" value="Delete" class="btn btn-primary" onclick="DeleteData()" />
+                        <input type="button" value="Back To Index" class="btn btn-warning" onclick="BackToIndex();" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+<script type="text/javascript">
+    function BackToIndex() {
+        window.location.href = '@Url.Action("Index","Company")'
+    }
 
+    function DeleteData() {
+        if (confirm('Are You Sure Want Delete This Record')) {
+            document.getElementById("DeleteData").submit();
+        }
+        else {
+            window.location.href='@Url.Action("Index","Company")'
+        }
+    }
+</script>

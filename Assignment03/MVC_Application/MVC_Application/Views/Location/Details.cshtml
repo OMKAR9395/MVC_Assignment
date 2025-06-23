@@ -1,0 +1,62 @@
+﻿@model MVC_Application.Models.LocationModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container mt-5">
+        <div class="row cen">
+            <div class="col-md-6 bg-success p-4 rounded shadow">
+                <h4 class="text-center text-white mb-4">Location Edit</h4>
+                <hr class="bg-white" />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.CompName)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.DropDownList("CompName1", (IEnumerable<SelectListItem>)ViewBag.Company, "--Select Company--", new { @class = "form-control", @disabled = "true" })
+                        @Html.ValidationMessageFor(model => model.CompName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.LocName)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(model => model.LocName, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+                        @Html.ValidationMessageFor(model => model.LocName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label text-white text-end">
+                        @Html.DisplayNameFor(model => model.Remarks)
+                    </label>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(Model => Model.Remarks, new { @data_val = "false", @class = "form-control", @disabled = "true" })
+                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+
+                <div class="row " style="padding-top:15px;margin-bottom:5px;">
+                    <div class="col-sm-offset-4">
+                        <input type="button" value="Back To Index" class="btn btn-warning" onclick="BackToIndex();" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    function BackToIndex() {
+        window.location.href = '@Url.Action("Index","Location")'
+    }
+</script>

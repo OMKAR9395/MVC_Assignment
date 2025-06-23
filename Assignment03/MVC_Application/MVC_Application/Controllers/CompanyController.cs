@@ -45,9 +45,9 @@ namespace MVC_Application.Controllers
             CompanyModel companyModel = new CompanyModel();
             companyModel.Comp_Name = Convert.ToString(collection["Comp_Name"]);
 
-            if (!string.IsNullOrWhiteSpace(collection["Stength"]))
+            if (!string.IsNullOrWhiteSpace(collection["Strength"]))
             {
-                companyModel.Strength = Convert.ToInt32(collection["Stength"]);
+                companyModel.Strength = Convert.ToInt32(collection["Strength"]);
             }
             
             companyModel.Remark = Convert.ToString(collection["Remark"]);
@@ -82,20 +82,90 @@ namespace MVC_Application.Controllers
 
 
         }
-        public ActionResult Edit(int?  Id = 0)
+        [HttpGet]
+        public ActionResult Edit(int  Id = 0)
         {
-            return View();
+            CompanyModel model = FillCompanyDetails(Id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Edit(FormCollection collection)
+        {
+            CompanyModel companyModel = new CompanyModel();
+            companyModel.Comp_Name = Convert.ToString(collection["Comp_Name"]);
+            companyModel.Comp_No = Convert.ToInt32(collection["Comp_No"]);
+            if (!string.IsNullOrWhiteSpace(collection["Strength"]))
+            {
+                companyModel.Strength = Convert.ToInt32(collection["Strength"]);
+            }
+            companyModel.Remark = Convert.ToString(collection["Remark"]);
+
+            if (string.IsNullOrWhiteSpace(companyModel.Comp_Name))
+            {
+                ModelState.AddModelError("Comp_Name", "Please Enter Company");
+            }
+            CompanyQuery company = new CompanyQuery();
+            if (ModelState.IsValid)
+            {
+                int Res = company.UpdateData(companyModel);
+                if (Res > 0)
+                {
+                    TempData["Message"] = "Data Updated Successfully";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(companyModel);
+                }
+            }
+            return View(companyModel);
         }
 
-
-        public ActionResult Delete(int? Id = 0)
+        public ActionResult Delete(int Id = 0)
         {
-            return View();
+            CompanyModel model = FillCompanyDetails(Id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Delete(FormCollection collection)
+        {
+            int CompNo = Convert.ToInt32(collection["Comp_No"]);
+            CompanyQuery company = new CompanyQuery();
+            int Res = company.DeleteData(CompNo);
+
+            if (Res > 0)  
+            {
+                TempData["Message"] = "Data Delete Successfully";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                CompanyModel companyModel = FillCompanyDetails(CompNo);
+                return View(companyModel);
+            }
+        }
+        public ActionResult Details(int Id = 0)
+        {
+            CompanyModel model = FillCompanyDetails(Id);
+
+            return View(model);
         }
 
-        public ActionResult Details(int? Id = 0)
+        public static CompanyModel FillCompanyDetails(int Id)
         {
-            return View();
+            CompanyModel model = new CompanyModel();
+
+            CompanyQuery company = new CompanyQuery();
+            DataTable dt = company.GetCompanyDetails(Id);
+
+            if (dt.Rows.Count > 0)
+            {
+                model.Comp_No = Convert.ToInt32(dt.Rows[0]["Comp_No"]);
+                model.Comp_Name = Convert.ToString(dt.Rows[0]["Comp_Name"]);
+                model.Strength = Convert.ToInt32(dt.Rows[0]["Strength"]);
+                model.Remark = Convert.ToString(dt.Rows[0]["Remarks"]);
+            }
+            return model;
         }
     }
 }

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<MVC_Application.Models.LocationModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row text-center pt-2">
+    <div class="col">
+        <h3>Index</h3>
+    </div>
+</div>
+
+<div class="row pt-2">
+    <div class="col">
+        <button class="btn btn-danger pt-2" onclick="Create()">Create New</button>
+    </div>
+</div>
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LocName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.LocNo }) |
+                @Html.ActionLink("Details", "Details", new { id = item.LocNo }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.LocNo })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script type="text/javascript">
+    function Create() {
+        window.location.href = '@Url.Action("Create", "Location")';
+    }
+</script>
+
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            var msg = '@TempData["Message"]'
+            if (msg) {
+                alert(msg)
+            }
+        }
+    </script>
+}
